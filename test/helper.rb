@@ -84,3 +84,13 @@ def assert_nothing_raised(*exceptions)
   end
 end
 
+# The default assert_raise only handles StandardError subclasses. Cast a wider net.
+def assert_raise(expected = Exception)
+  begin
+    yield
+  rescue Exception => exception
+  ensure
+    flunk("got #{exception.inspect} instead") unless exception.kind_of?(expected)
+    success
+  end
+end
